@@ -1,3 +1,4 @@
+import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -10,8 +11,9 @@ class BasePage:
         self.home_page = "http://127.0.0.1/litecart"
 
     def open_main_page(self):
-        self.driver.get(self.home_page)
-        assert self.driver.title == "Online Store | My Store"
+        with allure.step('Открываем главную страницу сайта'):
+            self.driver.get(self.home_page)
+            assert self.driver.title == "Online Store | My Store"
 
     def find_element(self, locator: tuple, time=20):
         return WebDriverWait(self.driver, time).until(
@@ -19,5 +21,7 @@ class BasePage:
             message=f"Element can't be found by {locator}")
 
     def click_on_cart(self):
-        cart = self.driver.find_element(By.LINK_TEXT, 'Checkout »')
-        cart.click()
+        with allure.step('Открываем корзину'):
+            cart = self.driver.find_element(
+                By.LINK_TEXT, 'Checkout »')
+            cart.click()
